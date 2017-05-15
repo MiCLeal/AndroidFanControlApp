@@ -39,13 +39,11 @@ public class BluetoothDevices extends AppCompatActivity {
      * Tag para o Log da Activity BluetoothDevices.
      */
     private static final String TAG = "BluetoothDevices";
-    private final int BLUETOOTH_DICOVABLE_REQUEST = 2;
-    private final int BLUETOOTH_DISCOVABLE_TIME = 120;
     private BluetoothAdapter mBtAdapter;
     private BluetoothSocket mBtSocket;
-    private ListView listView;
-    private ListView mNewDevicesListView;
-    private ArrayList<String> pairedBluetoothDevices;
+    private ListView pairedDevicesLV;
+    private ListView newDevicesLV;
+    private ArrayList<String> pairedDevicesList;
     private ArrayAdapter<String> newDevicesAdapter;
     private static View view;
 
@@ -58,12 +56,12 @@ public class BluetoothDevices extends AppCompatActivity {
         mBtAdapter = BluetoothAdapter.getDefaultAdapter();
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         view = fab.findViewById(R.id.fab);
-        listView = (ListView) findViewById(R.id.pairedListVIew);
-        mNewDevicesListView = (ListView) findViewById(R.id.newDevicesListView);
+        pairedDevicesLV = (ListView) findViewById(R.id.pairedListVIew);
+        newDevicesLV = (ListView) findViewById(R.id.newDevicesListView);
         Bundle bn = getIntent().getExtras();
-        pairedBluetoothDevices = bn.getStringArrayList("paired");
+        pairedDevicesList = bn.getStringArrayList("paired");
         newDevicesAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
-        fillPairedListView(pairedBluetoothDevices);
+        fillPairedListView(pairedDevicesList);
 
         IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
         this.registerReceiver(receiver, filter);
@@ -82,39 +80,51 @@ public class BluetoothDevices extends AppCompatActivity {
                     }
 
                     mBtAdapter.startDiscovery();
-
+                    Snackbar.make(view, "Discovering Devices!", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
                 }
             }
         });
 
-        mNewDevicesListView.setAdapter(newDevicesAdapter);
+        newDevicesLV.setAdapter(newDevicesAdapter);
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        pairedDevicesLV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (listView != null) {
+                if (pairedDevicesLV != null) {
                     try {
-                        BtConnect(pairedBluetoothDevices.get(position)
-                                .substring(pairedBluetoothDevices.indexOf("\n")
-                                        + 1, pairedBluetoothDevices.size()));
+                        BtConnect(pairedDevicesList.get(position)
+                                .substring(pairedDevicesList.get(position).indexOf("\n")
+                                        + 1, pairedDevicesList.get(position).length()));
+                    Snackbar.make(view, "Connected to " + pairedDevicesList.get(position)
+                            .substring(0, pairedDevicesList.get(position).indexOf("\n"))
+                            + " (" + pairedDevicesList.get(position)
+                            .substring(pairedDevicesList.get(position).indexOf("\n")
+                                    + 1, pairedDevicesList.get(position).length()) + ")",
+                            Snackbar.LENGTH_LONG).setAction("Action", null).show();
                     } catch (IOException e) {
+                        Snackbar.make(view, e.getMessage(), Snackbar.LENGTH_LONG)
+                                .setAction("Action", null).show();
                         e.printStackTrace();
                     }
-                    Snackbar.make(view, "Connected to " + pairedBluetoothDevices.get(position)
-                            .substring(0, pairedBluetoothDevices.indexOf("\n"))
-                            + " (" + pairedBluetoothDevices.get(position)
-                            .substring(pairedBluetoothDevices.indexOf("\n")
-                                    + 1, pairedBluetoothDevices.size()) + ")", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
                 }
             }
         });
 
-        mNewDevicesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        newDevicesLV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (mNewDevicesListView != null) {
+                if (newDevicesLV != null) {
                     // Comando para ser executado quando um item da lista for clicado.
+                    try {
+                        BtConnect(newDevicesAdapter.getItem(position).substring(newDevicesAdapter
+                                .getItem(position).indexOf("\n")
+                                + 1, newDevicesAdapter.getItem(position).length()));
+                    } catch (IOException e) {
+                        Snackbar.make(view, e.getMessage(), Snackbar.LENGTH_LONG)
+                                .setAction("Action", null).show();
+                        e.printStackTrace();
+                    }
                 }
             }
         });
@@ -126,7 +136,7 @@ public class BluetoothDevices extends AppCompatActivity {
         ArrayAdapter<String> btNameAdapter = new ArrayAdapter<String>(getBaseContext(),
                 android.R.layout.simple_list_item_1, devices);
         btNameAdapter.notifyDataSetChanged();
-        listView.setAdapter(btNameAdapter);
+        pairedDevicesLV.setAdapter(btNameAdapter);
     }
 
     private void BtConnect(String MacAddress) throws IOException {
@@ -174,16 +184,16 @@ public class BluetoothDevices extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == BLUETOOTH_DICOVABLE_REQUEST) {
-            if (resultCode == BLUETOOTH_DISCOVABLE_TIME) {
-                mBtAdapter.startDiscovery();
-                Snackbar.make(view, "Discovering Devices!", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            } else {
-                Snackbar.make(view, "Discovering Devices Failed!", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        }
+//        if (requestCode == BLUETOOTH_DICOVABLE_REQUEST) {
+////            if (resultCode == BLUETOOTH_DISCOVABLE_TIME) {
+//                mBtAdapter.startDiscovery();
+//                Snackbar.make(view, "Discovering Devices!", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+//            } else {
+//                Snackbar.make(view, "Discovering Devices Failed!", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+//            }
+//        }
     }
 
     public static Handler handler = new Handler() {
