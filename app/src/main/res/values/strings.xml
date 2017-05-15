@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">Fan Control</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="bluetooth_devices">Bluetooth Devices</string>
+    <string name="app_email">support@fancontrol.com</string>
+    <string name="no_devices">No Devices</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_paires_filter">Bluetooth Devices</string>
+    <string name="title_temperature">Temperature</string>
+    <string name="paired_devices_string">Paired Devices</string>
+    <string name="available_devices_string">Available Devices</string>
+    <string name="temperature_celsius">ºC</string>
+    <string name="title_activity_temperature">Temperature</string>
+    <string name="temperature_fahrenheit">ºF</string>
+    <string name="temperature_kelvin">ºK</string>
+</resources>
