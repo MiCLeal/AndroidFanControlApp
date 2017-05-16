@@ -39,6 +39,8 @@ public class MainActivity extends AppCompatActivity
      */
     private static final String TAG = "MainActivity";
     private static final int BLUETOOTH_REQUEST = 1;
+    private static final int SELECT_BLUETOOTH_REQUEST = 2;
+    private static final int SHOW_BLUETOOTH_LIST = 3;
 
     /**
      * ArrayList do tipo String com os nomes dos dispositivos pareados.
@@ -46,6 +48,8 @@ public class MainActivity extends AppCompatActivity
     private Set<BluetoothDevice> pairedDevices;
     private View views;
     private BluetoothAdapter mBtAdapter;
+
+    private CThread connect;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,7 +60,7 @@ public class MainActivity extends AppCompatActivity
         TextView txtConnectedTo = (TextView) findViewById(R.id.txtConnectedTo);
         setBluetoothAdapter();
 
-        txtConnectedTo.setText("Not Connected");
+        txtConnectedTo.setText(R.string.not_connected);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -133,19 +137,19 @@ public class MainActivity extends AppCompatActivity
                 if (mBtAdapter.isEnabled()) {
                     Log.d(TAG, "Navigation: BT Devices Clicked: Adapter status ON");
 
-                    pairedDevices = mBtAdapter.getBondedDevices();
-
-                    ArrayList<String> pairedAdapter = new ArrayList<String>();
-
-                    for (BluetoothDevice device : pairedDevices) {
-                        pairedAdapter.add(device.getName() + "\n" + device.getAddress());
-                    }
-
-                    Bundle bn = new Bundle();
-                    bn.putStringArrayList("paired", pairedAdapter);
-                    Intent paired = new Intent("paired_filter");
-                    paired.putExtras(bn);
-                    startActivity(paired);
+//                    pairedDevices = mBtAdapter.getBondedDevices();
+//
+//                    ArrayList<String> pairedAdapter = new ArrayList<String>();
+//
+//                    for (BluetoothDevice device : pairedDevices) {
+//                        pairedAdapter.add(device.getName() + "\n" + device.getAddress());
+//                    }
+//
+//                    Bundle bn = new Bundle();
+//                    bn.putStringArrayList("paired", pairedAdapter);
+                    Intent paired = new Intent(this, BluetoothDevices.class);
+//                    paired.putExtras(bn);
+                    startActivityForResult(paired, SELECT_BLUETOOTH_REQUEST);
                 } else {
                     Log.d(TAG, "Navigation: BT Devices Clicked: Adapter status OFF");
                     Snackbar.make(views, "Your need turn Bluetooth ON", Snackbar.LENGTH_LONG)
@@ -183,6 +187,18 @@ public class MainActivity extends AppCompatActivity
             } else {
                 Snackbar.make(views, "Bluetooth turned ON failed!", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+            }
+        }
+
+        if (requestCode == SELECT_BLUETOOTH_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                try {
+                    connect = new CThread(data.getStringExtra("devAddress"));
+                    connect.start();
+                } catch (Exception e) {
+                    Log.d(TAG, "Connect: " + e.getMessage());
+                    e.printStackTrace();
+                }
             }
         }
     }

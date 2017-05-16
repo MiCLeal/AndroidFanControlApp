@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
 
     <application
         android:allowBackup="true"
@@ -25,7 +26,6 @@
         <activity
             android:name=".BluetoothDevices"
             android:label="@string/title_activity_paires_filter"
-            android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="paired_filter" />
@@ -40,7 +40,6 @@
         <activity
             android:name=".TemperatureActivity"
             android:label="@string/title_activity_temperature"
-            android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="temperature_filter" />

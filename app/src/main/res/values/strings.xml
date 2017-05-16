@@ -15,4 +15,5 @@
     <string name="title_activity_temperature">Temperature</string>
     <string name="temperature_fahrenheit">ºF</string>
     <string name="temperature_kelvin">ºK</string>
+    <string name="not_connected">Not Connected</string>
 </resources>
