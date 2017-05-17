@@ -16,4 +16,6 @@
     <string name="temperature_fahrenheit">ºF</string>
     <string name="temperature_kelvin">ºK</string>
     <string name="not_connected">Not Connected</string>
+    <string name="connecting_bluetooth_error">Unable to Connect Device</string>
+    <string name="connecting_bluetooth_lost">Device connection was lost</string>
 </resources>
