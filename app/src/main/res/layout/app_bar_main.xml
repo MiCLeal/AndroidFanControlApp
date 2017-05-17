@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.fmu.bcc2k15.fancontrol.androidfancontrolapp.MainActivity">
+    tools:context="com.fmu.bcc2k15.fancontrol.androidfancontrolapp.activities.MainActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"

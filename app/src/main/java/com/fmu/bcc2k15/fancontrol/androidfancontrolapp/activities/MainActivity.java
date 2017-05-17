@@ -1,10 +1,7 @@
-package com.fmu.bcc2k15.fancontrol.androidfancontrolapp;
+package com.fmu.bcc2k15.fancontrol.androidfancontrolapp.activities;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothSocket;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -20,16 +17,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.io.IOException;
-import java.util.ArrayList;
+import com.fmu.bcc2k15.fancontrol.androidfancontrolapp.BluetoothDevices;
+import com.fmu.bcc2k15.fancontrol.androidfancontrolapp.ConnnectThread;
+import com.fmu.bcc2k15.fancontrol.androidfancontrolapp.R;
+
 import java.util.Set;
-import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -49,7 +44,7 @@ public class MainActivity extends AppCompatActivity
     private View views;
     private BluetoothAdapter mBtAdapter;
 
-    private CThread connect;
+    private ConnnectThread connect;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -193,7 +188,7 @@ public class MainActivity extends AppCompatActivity
         if (requestCode == SELECT_BLUETOOTH_REQUEST) {
             if (resultCode == RESULT_OK) {
                 try {
-                    connect = new CThread(data.getStringExtra("devAddress"));
+                    connect = new ConnnectThread(data.getStringExtra("devAddress"));
                     connect.start();
                 } catch (Exception e) {
                     Log.d(TAG, "Connect: " + e.getMessage());
