@@ -4,6 +4,8 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -21,7 +23,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.fmu.bcc2k15.fancontrol.androidfancontrolapp.BluetoothDevices;
-import com.fmu.bcc2k15.fancontrol.androidfancontrolapp.ConnnectThread;
+import com.fmu.bcc2k15.fancontrol.androidfancontrolapp.BluetoothConnection;
 import com.fmu.bcc2k15.fancontrol.androidfancontrolapp.R;
 
 import java.util.Set;
@@ -41,10 +43,10 @@ public class MainActivity extends AppCompatActivity
      * ArrayList do tipo String com os nomes dos dispositivos pareados.
      */
     private Set<BluetoothDevice> pairedDevices;
-    private View views;
+    private static View views;
     private BluetoothAdapter mBtAdapter;
 
-    private ConnnectThread connect;
+    private BluetoothConnection connect;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -188,7 +190,7 @@ public class MainActivity extends AppCompatActivity
         if (requestCode == SELECT_BLUETOOTH_REQUEST) {
             if (resultCode == RESULT_OK) {
                 try {
-                    connect = new ConnnectThread(data.getStringExtra("devAddress"));
+                    connect = new BluetoothConnection(getBaseContext(), handler);
                     connect.start();
                 } catch (Exception e) {
                     Log.d(TAG, "Connect: " + e.getMessage());
@@ -197,4 +199,23 @@ public class MainActivity extends AppCompatActivity
             }
         }
     }
+
+    public static Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            Bundle bn = msg.getData();
+            byte[] data = bn.getByteArray("data");
+            String dataString = new String(data);
+
+            if (dataString.equals("---N")) {
+                Snackbar.make(views, "Ocorreu um erro durante a conexão.", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            } else if (dataString.equals("---S")) {
+                Snackbar.make(views, "Conectado.", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            } else {
+
+            }
+        }
+    };
 }
