@@ -18,4 +18,7 @@
     <string name="not_connected">Not Connected</string>
     <string name="connecting_bluetooth_error">Unable to Connect Device</string>
     <string name="connecting_bluetooth_lost">Device connection was lost</string>
+    <string name="bluetooth_not_available">Bluetooth not available</string>
+    <string name="bt_not_enabled">Bluetooth not enabled</string>
+    <string name="connected_to">Connected to</string>
 </resources>

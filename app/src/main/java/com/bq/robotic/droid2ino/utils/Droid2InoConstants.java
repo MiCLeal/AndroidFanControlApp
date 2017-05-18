@@ -21,14 +21,14 @@
 *
 */
 
-package com.fmu.bcc2k15.fancontrol.androidfancontrolapp.utils;
+package com.bq.robotic.droid2ino.utils;
 
 import java.util.UUID;
 
 /**
  * Utilities class with all the constants of the library
  */
-public class Constants {
+public class Droid2InoConstants {
 
     // Message types sent from the BluetoothConnection Handler
     public static final int MESSAGE_STATE_CHANGE = 1;
@@ -57,7 +57,7 @@ public class Constants {
     // Unique UUID for this application
     public static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 
-    // Constants that indicate the current connection state
+    // Droid2InoConstants that indicate the current connection state
     public static final int STATE_NONE = 0;       // we're doing nothing
     public static final int STATE_LISTEN = 1;     // now listening for incoming connections
     public static final int STATE_CONNECTING = 2; // now initiating an outgoing connection

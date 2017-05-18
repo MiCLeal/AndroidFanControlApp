@@ -1,10 +1,7 @@
 package com.fmu.bcc2k15.fancontrol.androidfancontrolapp;
 
-import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothSocket;
-import android.bluetooth.le.AdvertiseData;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -14,25 +11,15 @@ import android.os.Message;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
-import java.util.logging.LogRecord;
+import com.bq.robotic.droid2ino.BluetoothConnection;
 
 public class BluetoothDevices extends AppCompatActivity {
 
@@ -45,7 +32,8 @@ public class BluetoothDevices extends AppCompatActivity {
     private ListView newDevicesLV;
     private ArrayAdapter<String> pairedDevicesAdapter;
     private ArrayAdapter<String> newDevicesAdapter;
-    private static View view;
+    private View view;
+    private BluetoothConnection connection;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -190,19 +178,7 @@ public class BluetoothDevices extends AppCompatActivity {
     public static Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            Bundle bn = msg.getData();
-            byte[] data = bn.getByteArray("data");
-            String dataString = new String(data);
 
-            if (dataString.equals("---N")) {
-                Snackbar.make(view, "Ocorreu um erro durante a conexão.", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            } else if (dataString.equals("---S")) {
-                Snackbar.make(view, "Conectado.", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            } else {
-
-            }
         }
     };
 }

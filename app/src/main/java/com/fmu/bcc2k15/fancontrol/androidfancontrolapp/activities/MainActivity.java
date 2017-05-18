@@ -22,14 +22,14 @@ import android.view.MenuItem;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.bq.robotic.droid2ino.Activities.BaseBluetoothConnectionActivity;
 import com.fmu.bcc2k15.fancontrol.androidfancontrolapp.BluetoothDevices;
-import com.fmu.bcc2k15.fancontrol.androidfancontrolapp.BluetoothConnection;
+import com.bq.robotic.droid2ino.*;
 import com.fmu.bcc2k15.fancontrol.androidfancontrolapp.R;
 
 import java.util.Set;
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends BaseBluetoothConnectionActivity {
 
     /**
      * Tag para o Log da MainActivity
@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity
 
     private BluetoothConnection connect;
 
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -175,7 +175,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == BLUETOOTH_REQUEST) {
             if (resultCode == RESULT_OK) {
                 pairedDevices = mBtAdapter.getBondedDevices();
@@ -198,6 +198,11 @@ public class MainActivity extends AppCompatActivity
                 }
             }
         }
+    }
+
+    @Override
+    public void onNewMessage(String message) {
+
     }
 
     public static Handler handler = new Handler() {
